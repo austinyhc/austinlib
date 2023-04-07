@@ -4,7 +4,6 @@ author: "Austin Chen"
 date: "2022-12-01"
 categories: [byte-wise,c]
 toc: true
-# draft: true
 ---
 
 ![](thumbnail.jpg)

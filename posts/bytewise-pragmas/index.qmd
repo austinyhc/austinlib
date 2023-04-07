@@ -71,7 +71,7 @@ void foo()
 #pragma GCC pop_macro("MACRO") // pop value of macro MACRO back
 ```
 
- ## Code optimization
+## Code optimization
 
 For most scenarios, I stand by a rule to use the same optimization options for both `Debug` and `Release` builds. This prevents unnessary errors and code breakage when switching builds types, where optimizer might do a too-good job and it ends up breaking the executaable. Remember, build type is not just about optimization level.
 
