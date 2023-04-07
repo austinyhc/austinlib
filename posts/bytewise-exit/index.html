@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Chen">
-<meta name="dcterms.date" content="2023-03-16">
+<meta name="dcterms.date" content="2023-03-19">
 
-<title>AUSTIN CAN HELP - Pragmas</title>
+<title>AUSTIN CAN HELP - exit(0)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -141,9 +107,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pragmas</h1>
+      <h1 class="title">exit(0)</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">byte-wise</div>
+                <div class="quarto-category">c</div>
+                <div class="quarto-category">c++</div>
               </div>
                   </div>
   </div>
@@ -161,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 16, 2023</p>
+        <p class="date">March 19, 2023</p>
       </div>
     </div>
     
@@ -177,10 +145,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#pragmas" id="toc-pragmas" class="nav-link active" data-scroll-target="#pragmas">Pragmas</a>
+  <li><a href="#exit0" id="toc-exit0" class="nav-link active" data-scroll-target="#exit0">exit(0)</a>
   <ul class="collapse">
-  <li><a href="#option-stacking" id="toc-option-stacking" class="nav-link" data-scroll-target="#option-stacking">Option stacking</a></li>
-  <li><a href="#code-optimization" id="toc-code-optimization" class="nav-link" data-scroll-target="#code-optimization">Code optimization</a></li>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#back-to-basics" id="toc-back-to-basics" class="nav-link" data-scroll-target="#back-to-basics">Back to Basics</a></li>
+  <li><a href="#meomory-leak" id="toc-meomory-leak" class="nav-link" data-scroll-target="#meomory-leak">Meomory Leak</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -191,70 +161,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<section id="pragmas" class="level1">
-<h1>Pragmas</h1>
-<p><code>#pragma</code> is a directive specifying extra information to the compiler. With it you can print debug messages, change compilation warnings and optimizations and much more.</p>
-<p>You might be familiar with <code>pragma once</code>, which lets the compiler know to only read the file once. It is usually found on top of header files. This is so called “un-official” replacement for include guard for preventing the same header file to be included multiple times.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// header file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef HEAD_FILE_H_</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#</span><span class="er">deine HEAD_FILE_H_</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// contents of header file</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif </span><span class="co">// HEAD_FILE_H_</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The conventional method requires that the programmer does provide a unique macro for each header file. Pragma on the other hand is trivial.</p>
-<p>Include errors, resulting in some form of re-definition, is caused by the header being included by other header files, which are then in turn included in a source file - thus multiple inclusions of the same header file.</p>
-<p><code>#pragma</code> in itself is part of the C and C++ standard, but <code>#pragma once</code> is part of the compiler implementation, therefore it is not as universal as <code>#ifndef</code> include guards, which are based on the preprocessor standard. Still it is widely adopted in most modern compilers.</p>
-<p>The syntax for a pragma might look something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma PREFIX option value(s)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Pragma can source its rules and options from various packages. Those defined by the standard use a prefix <code>STDC</code>, while those used by GNU use <code>GCC</code> prefix.</p>
-<section id="option-stacking" class="level2">
-<h2 class="anchored" data-anchor-id="option-stacking">Option stacking</h2>
-<p>It is important to note, that a pragma directive applies for the whole file from file from that point. Everything before it is unaffected. This is why, when applying certain options just for a small section, it is useful to save current options and restore them back afte the said section.</p>
-<p>This is why you should use <code>push</code> and <code>pop</code> options before and after applying a progma. Push and pop can be used as a value to an option or as part of the option as well. Here are a few examples</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic push</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic error "-Wformat" </span><span class="co">// treat this warning as error</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic pop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MACRO </span><span class="dv">1</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_macro("MACRO") </span><span class="co">// save MACRO value to stack</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#undef MACRO </span><span class="co">// undefine macro MACRO</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_macro("MACRO") </span><span class="co">// pop value of macro MACRO back</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="exit0" class="level1">
+<h1>exit(0)</h1>
+<blockquote class="blockquote">
+<p>Does <code>exit(0)</code> cause any memory leak?</p>
+</blockquote>
+<p><img src="https://media.istockphoto.com/id/685520492/photo/outdoors.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=ag3ZFqVpkx59ZRq0uB-vUFHEOBQwCYxlGNQtrWidppo=" class="img-fluid"></p>
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>The other day when I was reading someone else’s code, I found the author uses a lot of <code>exit(EXIT_FAILURE)</code> which makes me wonder why I rarely use this and will it not cause memory leak since the function never returns to the callee instead it executes the <code>exit(EXIT_FAILURE)</code> whenever a error checking does not go through.</p>
 </section>
-<section id="code-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="code-optimization">Code optimization</h2>
-<p>For most scenarios, I stand by a rule to use the same optimization options for both <code>Debug</code> and <code>Release</code> builds. This prevents unnessary errors and code breakage when switching builds types, where optimizer might do a too-good job and it ends up breaking the executaable. Remember, build type is not just about optimization level.</p>
-<p>For my builds, I use option <code>Og</code> for <code>gcc</code> compiler. This is, by my estimations, the est compromise between optimized code and debug-ability. However it still isn’t perfect. While it does prevent inlining of regular functions, some lambdas and trivial class methods do get inlined. Sometimes whole <code>if-else</code> blocks get optimized to a point, that you cannot put a breakpoint anywhere useful. Even if you do, some variables might get optimized and debugger will not be able to give you any information on their value.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_options </span><span class="co">// save current compiler options</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC optimize ("-O0") </span><span class="co">// set optimization level to zero</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">(</span><span class="dt">int</span> a<span class="op">)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> cpy <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cpy <span class="op">+</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_options </span><span class="co">// restore saved compiler options</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the example above, such trivial function might get optimized away. If not, stepping through it might prove useless, as variable <code>cpy</code> might get optimized so that debugger cannot see its value. Setting optimization level to zero disables any funny business from the compiler and forces it to generate expected instructions.</p>
+<section id="back-to-basics" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-basics">Back to Basics</h2>
+<p>Before going any further, let’s dive into the first-hand materials and see how they describe for the <code>exit()</code>.</p>
+<blockquote class="blockquote">
+<p><strong>Linux Programmer’s Manual</strong></p>
+<p>The <code>exit()</code> function causes <strong>normal process termination</strong> and the least significant byte of status (i.e., status &amp; 0xFF) is returned to the parent (see wait(2)). All functions registered with <code>atexit(3)</code> and <code>on_exit(3)</code> are called, in the reverse order of their registration. (It is possible for one of these functions to use <code>atexit(3)</code> or <code>on_exit(3)</code> to register an additional function to be executed <strong>during exit processing</strong>; the new registration is added to the front of the list of functions that remain to be called.) If one of these functions does not return (e.g., it calls <code>_exit(2)</code>, or kills itself with a signal), then <strong>none of the remaining functions is called</strong>, and further exit processing (in particular, flushing of stdio(3) streams) is abandoned. If a function has been registered multiple times using atexit(3) or on_exit(3), then it is called as many times as it was registered.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>C23 §7.24.4.4 The exit function</strong></p>
+<p>The exit function causes <strong>normal program termination</strong> to occur. No functions registered by the <a href="https://en.cppreference.com/w/cpp/utility/program/at_quick_exit"><code>at_quick_exit</code></a> function are called. If a program calls the exit function more than once, or calls the <code>quick_exit</code> function in addition to the exit function, the behavior is undefined.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>First, all functions registered by the <code>atexit</code> function are called, in the reverse order of their registration, except that a function is called after any previously registered functions that had already been called at the time it was registered. If, during the call to any such function, a call to the <code>longjmp</code> function is made that would terminate the call to the registered function, the behavior is undefined.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Next, all <strong>open streams with unwritten buffered data are flushed</strong>, all <strong>open streams are closed</strong>, and all files created by the <strong>tmpfile function are removed</strong>.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Finally, control is returned to the host environment. If the value of status is zero or <code>EXIT_SUCCESS</code>, an implementation-defined form of the status successful termination is returned. If the value of status is <code>EXIT_FAILURE</code>, an implementation-defined form of the status unsuccessful termination is returned. Otherwise the status returned is implementation-defined.</p>
+</blockquote>
+<p>In the above,</p>
+<ul>
+<li><code>exit()</code> invokes the <strong>normal process termination</strong>, also suggesting the local automatic objects are not destroyed because the <strong>stack is not unwound</strong>.</li>
+<li>with <code>exit()</code>, all functions registered with <code>atexit()</code> are called.</li>
+<li>with <code>exit()</code>, all openning streams are flushed and closed, and files created by <code>tmpfile</code> are removed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+</section>
+<section id="meomory-leak" class="level2">
+<h2 class="anchored" data-anchor-id="meomory-leak">Meomory Leak</h2>
+<p>Before jumping into any conclusion, let’s refresh a bit on the definition of <strong>memory leak</strong>. To my way of thinking, essentially, there are two definitions of <strong>memory leak</strong> that are in common usage among programmers.</p>
+<p>This <strong>first</strong> commonly seen definition of memory leak is,</p>
+<blockquote class="blockquote">
+<p>Memory was allocated and <strong>was not subsequently freed</strong> before the program is terminated.</p>
+</blockquote>
+<p>However, many programmers argue that certain types of memory leaks that fits this definition don’t actually pose any sort of problem, and therefore should not be considered <strong>true memory leaks</strong>.</p>
+<p>A more useful definition of memory leak is,</p>
+<blockquote class="blockquote">
+<p>Memory was allocated and <strong>cannot be subsequently freed</strong> because the program lost track of any pointers to the allocated memory block.</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled" title="What Valgrind Defines Memory Leak">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What Valgrind Defines Memory Leak
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Valgrind</strong> uses the stricter definition of the term memory leak. This is the type of leak which can potentially cause significant heap depletion, especially for <strong>long lived</strong> processes. The <strong>still reachable</strong> category within Valgrind’s leak report refers to allocations that fit only the first definition of memory leak. These blocks were not freed, but they could have been freed (if the programmer had wanted to) because the program still was keeping track of pointers to those memory blocks.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The answer is quite obviously up to this point, the <code>exit()</code> invokes a termination of the current process, the OS collects all the memory allocated to that process, so strictly speakning, the <code>exit()</code> does not pose any memory leaks in this case.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Just to add, in the vast majority of cases the OS will free the memory - as is the case with normal flavors of Windows, Linux, Solaris, etc. However it is important to note that in specialized environments such as various Real-Time Operating Systems the memory may not be freed when the program is terminated.</p>
+</div>
+</div>
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://en.cppreference.com/w/cpp/utility/program/exit"><code>std::exit</code></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://stackoverflow.com/questions/3840582/still-reachable-leak-detected-by-valgrind">Still Reachable Leak detected by Valgrind</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Chen">
-<meta name="dcterms.date" content="2023-03-16">
 
-<title>AUSTIN CAN HELP - Pragmas</title>
+<title>AUSTIN CAN HELP - Kahan Summation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -141,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pragmas</h1>
+      <h1 class="title">Kahan Summation</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">byte-wise</div>
               </div>
@@ -158,12 +123,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             </div>
     </div>
       
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">March 16, 2023</p>
-      </div>
-    </div>
     
       
     </div>
@@ -177,11 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#pragmas" id="toc-pragmas" class="nav-link active" data-scroll-target="#pragmas">Pragmas</a>
-  <ul class="collapse">
-  <li><a href="#option-stacking" id="toc-option-stacking" class="nav-link" data-scroll-target="#option-stacking">Option stacking</a></li>
-  <li><a href="#code-optimization" id="toc-code-optimization" class="nav-link" data-scroll-target="#code-optimization">Code optimization</a></li>
-  </ul></li>
+  <li><a href="#kahan-summation" id="toc-kahan-summation" class="nav-link active" data-scroll-target="#kahan-summation">Kahan Summation</a></li>
   </ul>
 </nav>
     </div>
@@ -191,67 +146,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<section id="pragmas" class="level1">
-<h1>Pragmas</h1>
-<p><code>#pragma</code> is a directive specifying extra information to the compiler. With it you can print debug messages, change compilation warnings and optimizations and much more.</p>
-<p>You might be familiar with <code>pragma once</code>, which lets the compiler know to only read the file once. It is usually found on top of header files. This is so called “un-official” replacement for include guard for preventing the same header file to be included multiple times.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// header file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef HEAD_FILE_H_</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#</span><span class="er">deine HEAD_FILE_H_</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// contents of header file</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif </span><span class="co">// HEAD_FILE_H_</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The conventional method requires that the programmer does provide a unique macro for each header file. Pragma on the other hand is trivial.</p>
-<p>Include errors, resulting in some form of re-definition, is caused by the header being included by other header files, which are then in turn included in a source file - thus multiple inclusions of the same header file.</p>
-<p><code>#pragma</code> in itself is part of the C and C++ standard, but <code>#pragma once</code> is part of the compiler implementation, therefore it is not as universal as <code>#ifndef</code> include guards, which are based on the preprocessor standard. Still it is widely adopted in most modern compilers.</p>
-<p>The syntax for a pragma might look something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma PREFIX option value(s)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Pragma can source its rules and options from various packages. Those defined by the standard use a prefix <code>STDC</code>, while those used by GNU use <code>GCC</code> prefix.</p>
-<section id="option-stacking" class="level2">
-<h2 class="anchored" data-anchor-id="option-stacking">Option stacking</h2>
-<p>It is important to note, that a pragma directive applies for the whole file from file from that point. Everything before it is unaffected. This is why, when applying certain options just for a small section, it is useful to save current options and restore them back afte the said section.</p>
-<p>This is why you should use <code>push</code> and <code>pop</code> options before and after applying a progma. Push and pop can be used as a value to an option or as part of the option as well. Here are a few examples</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic push</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic error "-Wformat" </span><span class="co">// treat this warning as error</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic pop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MACRO </span><span class="dv">1</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_macro("MACRO") </span><span class="co">// save MACRO value to stack</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#undef MACRO </span><span class="co">// undefine macro MACRO</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_macro("MACRO") </span><span class="co">// pop value of macro MACRO back</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="code-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="code-optimization">Code optimization</h2>
-<p>For most scenarios, I stand by a rule to use the same optimization options for both <code>Debug</code> and <code>Release</code> builds. This prevents unnessary errors and code breakage when switching builds types, where optimizer might do a too-good job and it ends up breaking the executaable. Remember, build type is not just about optimization level.</p>
-<p>For my builds, I use option <code>Og</code> for <code>gcc</code> compiler. This is, by my estimations, the est compromise between optimized code and debug-ability. However it still isn’t perfect. While it does prevent inlining of regular functions, some lambdas and trivial class methods do get inlined. Sometimes whole <code>if-else</code> blocks get optimized to a point, that you cannot put a breakpoint anywhere useful. Even if you do, some variables might get optimized and debugger will not be able to give you any information on their value.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_options </span><span class="co">// save current compiler options</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC optimize ("-O0") </span><span class="co">// set optimization level to zero</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">(</span><span class="dt">int</span> a<span class="op">)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> cpy <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cpy <span class="op">+</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_options </span><span class="co">// restore saved compiler options</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the example above, such trivial function might get optimized away. If not, stepping through it might prove useless, as variable <code>cpy</code> might get optimized so that debugger cannot see its value. Setting optimization level to zero disables any funny business from the compiler and forces it to generate expected instructions.</p>
+<section id="kahan-summation" class="level1">
+<h1>Kahan Summation</h1>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
