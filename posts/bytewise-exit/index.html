@@ -176,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Before going any further, let’s dive into the first-hand materials and see how they describe for the <code>exit()</code>.</p>
 <blockquote class="blockquote">
 <p><strong>Linux Programmer’s Manual</strong></p>
-<p>The <code>exit()</code> function causes <strong>normal process termination</strong> and the least significant byte of status (i.e., status &amp; 0xFF) is returned to the parent (see wait(2)). All functions registered with <code>atexit(3)</code> and <code>on_exit(3)</code> are called, in the reverse order of their registration. (It is possible for one of these functions to use <code>atexit(3)</code> or <code>on_exit(3)</code> to register an additional function to be executed <strong>during exit processing</strong>; the new registration is added to the front of the list of functions that remain to be called.) If one of these functions does not return (e.g., it calls <code>_exit(2)</code>, or kills itself with a signal), then <strong>none of the remaining functions is called</strong>, and further exit processing (in particular, flushing of stdio(3) streams) is abandoned. If a function has been registered multiple times using atexit(3) or on_exit(3), then it is called as many times as it was registered.</p>
+<p>The <code>exit()</code> function causes <strong>normal process termination</strong> and the least significant byte of status (i.e., status &amp; 0xFF) is returned to the parent (see wait(2)). All functions registered with <code>atexit(3)</code> and <code>on_exit(3)</code> are called, in the reverse order of their registration. (It is possible for one of these functions to use <code>atexit(3)</code> or <code>on_exit(3)</code> to register an additional function to be executed <strong>during exit processing</strong>; the new registration is added to the front of the list of functions that remain to be called.) If one of these functions does not return (e.g., it calls <code>_exit(2)</code>, or kills itself with a signal), then <strong>none of the remaining functions is called</strong>, and further exit processing (in particular, flushing of stdio(3) streams) is abandoned. If a function has been registered multiple times using <code>atexit(3)</code> or <code>on_exit(3)</code>, then it is called as many times as it was registered.</p>
 </blockquote>
 <blockquote class="blockquote">
 <p><strong>C23 §7.24.4.4 The exit function</strong></p>
@@ -195,7 +195,12 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><code>exit()</code> invokes the <strong>normal process termination</strong>, also suggesting the local automatic objects are not destroyed because the <strong>stack is not unwound</strong>.</li>
 <li>with <code>exit()</code>, all functions registered with <code>atexit()</code> are called.</li>
-<li>with <code>exit()</code>, all openning streams are flushed and closed, and files created by <code>tmpfile</code> are removed.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>with <code>exit()</code>, all openning streams are flushed and closed, and files created by <code>tmpfile</code> are removed.</li>
+</ul>
+<p>Also, when it comes to the <strong>destructor in C++</strong> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>,</p>
+<ul>
+<li>with <code>exit()</code>, <strong>non-local objects with static storage duration</strong> are destroyed in the reverse order of the completion of their constructor.</li>
+<li>with <code>exit()</code>, for each <strong>local object, <code>obj</code>, with static storage duration</strong>, <code>obj</code> is destroyed as if a function calling the destructor of <code>obj</code> were registered with <code>std::atexit</code> at the completion of the constructor of <code>obj</code>.</li>
 </ul>
 </section>
 <section id="meomory-leak" class="level2">
