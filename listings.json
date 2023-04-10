@@ -2,7 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/bytewise-kahan-summation/index.html",
       "/posts/bytewise-exit/index.html",
       "/posts/bytewise-pragmas/index.html",
       "/posts/bytewise-data-alignment/index.html",

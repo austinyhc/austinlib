@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "Kahan Summation\n\n\n\n\n\n\n\nbyte-wise\n\n\n\n\n\n\n\n\n\n\n\nApr 7, 2023\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nexit(0)\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\nc++\n\n\n\n\n\n\n\n\n\n\n\nMar 19, 2023\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nPragmas\n\n\n\n\n\n\n\nbyte-wise\n\n\n\n\n\n\n\n\n\n\n\nMar 16, 2023\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nData Alignment\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\n\n\n\n\n\n\n\n\n\nDec 1, 2022\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nDeclaring a String\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\nstring\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2022\n\n\nAustin Chen\n\n\n\n\n\n\nNo matching items"
+    "text": "exit(0)\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\nc++\n\n\n\n\n\n\n\n\n\n\n\nMar 19, 2023\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nPragmas\n\n\n\n\n\n\n\nbyte-wise\n\n\n\n\n\n\n\n\n\n\n\nMar 16, 2023\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nData Alignment\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\n\n\n\n\n\n\n\n\n\nDec 1, 2022\n\n\nAustin Chen\n\n\n\n\n\n\n  \n\n\n\n\nDeclaring a String\n\n\n\n\n\n\n\nbyte-wise\n\n\nc\n\n\nstring\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2022\n\n\nAustin Chen\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/bytewise-pragmas/index.html#option-stacking",
@@ -68,13 +68,6 @@
     "title": "exit(0)",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nstd::exit↩︎\nStill Reachable Leak detected by Valgrind↩︎"
-  },
-  {
-    "objectID": "posts/bytewise-kahan-summation/index.html",
-    "href": "posts/bytewise-kahan-summation/index.html",
-    "title": "Kahan Summation",
-    "section": "",
-    "text": "Kahan Summation"
   },
   {
     "objectID": "posts/bytewise-data-alignment/index.html#memory-addressing",
