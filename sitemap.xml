@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/about.html</loc>
+    <lastmod>2023-04-10T05:45:59.489Z</lastmod>
+  </url>
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/index.html</loc>
+    <lastmod>2023-04-10T05:45:59.905Z</lastmod>
+  </url>
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/posts/bytewise-pragmas/index.html</loc>
+    <lastmod>2023-04-10T05:46:00.161Z</lastmod>
+  </url>
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/posts/bytewise-exit/index.html</loc>
+    <lastmod>2023-04-10T05:46:00.445Z</lastmod>
+  </url>
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/posts/bytewise-data-alignment/index.html</loc>
+    <lastmod>2023-04-10T05:46:01.049Z</lastmod>
+  </url>
+  <url>
+    <loc>https://austinyhc.github.io/austinlib/posts/bytewise-declaring-a-string/index.html</loc>
+    <lastmod>2023-04-10T05:46:01.489Z</lastmod>
+  </url>
+</urlset>
