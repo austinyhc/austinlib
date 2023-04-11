@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.sensorai.link/about.html</loc>
-    <lastmod>2023-04-10T05:48:47.318Z</lastmod>
+    <lastmod>2023-04-11T10:21:47.545Z</lastmod>
   </url>
   <url>
     <loc>https://www.sensorai.link/index.html</loc>
-    <lastmod>2023-04-10T05:48:47.694Z</lastmod>
+    <lastmod>2023-04-11T10:21:48.069Z</lastmod>
   </url>
   <url>
     <loc>https://www.sensorai.link/posts/bytewise-pragmas/index.html</loc>
-    <lastmod>2023-04-10T05:48:47.946Z</lastmod>
+    <lastmod>2023-04-11T10:21:48.337Z</lastmod>
   </url>
   <url>
     <loc>https://www.sensorai.link/posts/bytewise-exit/index.html</loc>
-    <lastmod>2023-04-10T05:48:48.226Z</lastmod>
+    <lastmod>2023-04-11T10:21:48.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sensorai.link/posts/bytewise-arrays-decay-into-pointers/index.html</loc>
+    <lastmod>2023-04-11T10:21:49.141Z</lastmod>
   </url>
   <url>
     <loc>https://www.sensorai.link/posts/bytewise-data-alignment/index.html</loc>
-    <lastmod>2023-04-10T05:48:48.790Z</lastmod>
+    <lastmod>2023-04-11T10:21:49.605Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sensorai.link/posts/bytewise-lvalue-and-rvalue/index.html</loc>
+    <lastmod>2023-04-11T10:21:49.801Z</lastmod>
   </url>
   <url>
     <loc>https://www.sensorai.link/posts/bytewise-declaring-a-string/index.html</loc>
-    <lastmod>2023-04-10T05:48:49.206Z</lastmod>
+    <lastmod>2023-04-11T10:21:50.285Z</lastmod>
   </url>
 </urlset>

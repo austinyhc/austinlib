@@ -4,6 +4,8 @@
     "items": [
       "/posts/bytewise-exit/index.html",
       "/posts/bytewise-pragmas/index.html",
+      "/posts/bytewise-arrays-decay-into-pointers/index.html",
+      "/posts/bytewise-lvalue-and-rvalue/index.html",
       "/posts/bytewise-data-alignment/index.html",
       "/posts/bytewise-declaring-a-string/index.html"
     ]

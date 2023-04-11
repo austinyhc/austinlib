@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Harlow Malloc">
-<meta name="dcterms.date" content="2023-04-06">
+<meta name="author" content="Austin Chen">
+<meta name="dcterms.date" content="2023-01-11">
 
-<title>AUSTIN CAN HELP - Post With Code</title>
+<title>AUSTIN CAN HELP - Why Arrays Decay into Pointers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -107,11 +141,10 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Post With Code</h1>
+      <h1 class="title">Why Arrays Decay into Pointers</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">news</div>
-                <div class="quarto-category">code</div>
-                <div class="quarto-category">analysis</div>
+                <div class="quarto-category">byte-wise</div>
+                <div class="quarto-category">c</div>
               </div>
                   </div>
   </div>
@@ -122,14 +155,14 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Harlow Malloc </p>
+               <p>Austin Chen </p>
             </div>
     </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 6, 2023</p>
+        <p class="date">January 11, 2023</p>
       </div>
     </div>
     
@@ -147,11 +180,80 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is a post with executable code.</p>
+<p>Arrays can behave like pointers in many circumstances such as when an array is passed to function, it is treated as a pointer. Also, pointer arithmetic is applicable to array. However, these two differ from each other in many ways. The following comparison chart summarized the key differences vetween a pointer and an array in C. <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<ul>
+<li>Array
+<ul>
+<li>An array stores one or more values of a similar type</li>
+<li>Contiguous or sequential memory is allocated to the elements of an array</li>
+<li>Arrays are static, so their size cannot be altered</li>
+<li>A single array can store a large number of elements</li>
+<li>The data type of the array is determined by the type of elements store in it</li>
+<li>When an array is passed to the <code>sizeof()</code> operator, the combined size of all the stored elements is returned</li>
+<li>Memory is allocated to an array during the compilation</li>
+</ul></li>
+<li>Pointer
+<ul>
+<li>A pointer stores the address or memory location of a variable</li>
+<li>A pointer can be allocated to any random available memory</li>
+<li>A pointer is dynamic, so the memory size can be either altered or even freed</li>
+<li>A pointer can point to only one variable’s address</li>
+<li>The data type of a pointer is determined by the type of the variable whose memory location it is pointing to</li>
+<li>When a pointer is passed to the <code>sizeof()</code> operator, the size of the pointer is printed</li>
+<li>Memory is allocated to a pointer during the run time of the program</li>
+</ul></li>
+</ul>
+<p>First, let’s clear up some terminology. Here’s what the C standard says:</p>
+<blockquote class="blockquote">
+<p><strong>C11 § 6.3.2.1.</strong></p>
+<p><strong>Except</strong> when it is the <strong>operand of the sizeof operator</strong>, or the <strong>unary &amp; operator</strong>, or is a <strong>string literal</strong> used to initialize an array, an expression that has type “array of type” is converted to an expression with type “pointer to type” that points to the initial element of the array object and is not an lvalue. If the array object has register storage class, the behavior is undefined.</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The unary <code>&amp;</code> operator means the <strong>address-of</strong> operator.</p>
+</div>
+</div>
+<p>It’s not arrays in general that decays into pointers, it’s <strong>array expressions</strong> - and not in all contexts. This is <strong>not a type conversions</strong>. It’s an adjustment that <strong>happens at compile time</strong>.</p>
+<p>The reasons are historical. In C’s predecessor language B, this declaration:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> V<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>would allocate a cell named <code>V</code> and another group of 10 consecutive cells. The cell named <code>V</code> stores the address of the first item of the 10 consecutive cells. The expression <code>V[5]</code> was, and still is, equivalent to <code>*(V+5)</code>. In B, <code>V</code> was treated as a pointer object.</p>
+<p>In C, with the nearest equivalent declaration:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> V<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>V</code> is an array object, but <strong>the expression <code>V</code></strong> is converted to a pointer expression and used with the <strong>indexing operator []</strong>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>some_function<span class="op">(</span>V<span class="op">);</span> <span class="co">// V is an expression</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>See <a href="https://www.bell-labs.com/usr/dmr/www/chist.html">C history</a> on the late <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a>’s home page at Bell Labs.</p>
+<p>One of the consequences of this is that, although array values exist, you can’t manipulate them directly in C. Rather we manipulate array objects using pointers to their elements. (By contrast, we can manipulate structure values directly.)</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The relationship between arrays and pointers in C can be confusing. <strong>Section 6</strong> of <a href="https://c-faq.com/aryptr/index.html">comp.lang.c Frequently Asked Questions</a> has the best explanation I know.</p>
+</div>
+</div>
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://www.simplilearn.com/tutorials/c-tutorial/array-in-c">Array in C: Definition, Advantages, Declare, Initialize and More</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

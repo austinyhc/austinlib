@@ -145,13 +145,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#exit0" id="toc-exit0" class="nav-link active" data-scroll-target="#exit0">exit(0)</a>
-  <ul class="collapse">
-  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
   <li><a href="#back-to-basics" id="toc-back-to-basics" class="nav-link" data-scroll-target="#back-to-basics">Back to Basics</a></li>
   <li><a href="#meomory-leak" id="toc-meomory-leak" class="nav-link" data-scroll-target="#meomory-leak">Meomory Leak</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -161,12 +158,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="exit0" class="level1">
-<h1>exit(0)</h1>
-<blockquote class="blockquote">
-<p>Does <code>exit(0)</code> cause any memory leak?</p>
-</blockquote>
 <p><img src="https://media.istockphoto.com/id/685520492/photo/outdoors.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=ag3ZFqVpkx59ZRq0uB-vUFHEOBQwCYxlGNQtrWidppo=" class="img-fluid"></p>
+<blockquote class="blockquote">
+<p>Does <code>exit(0)</code> introduce memory leak?</p>
+</blockquote>
 <section id="motivation" class="level2">
 <h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
 <p>The other day when I was reading someone else’s code, I found the author uses a lot of <code>exit(EXIT_FAILURE)</code> which makes me wonder why I rarely use this and will it not cause memory leak since the function never returns to the callee instead it executes the <code>exit(EXIT_FAILURE)</code> whenever a error checking does not go through.</p>
@@ -247,7 +242,6 @@ Warning
 </div>
 
 
-</section>
 </section>
 
 

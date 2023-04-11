@@ -178,9 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-alignment" id="toc-data-alignment" class="nav-link active" data-scroll-target="#data-alignment">Data Alignment</a>
-  <ul class="collapse">
-  <li><a href="#memory-addressing" id="toc-memory-addressing" class="nav-link" data-scroll-target="#memory-addressing">Memory addressing</a>
+  <li><a href="#memory-addressing" id="toc-memory-addressing" class="nav-link active" data-scroll-target="#memory-addressing">Memory addressing</a>
   <ul class="collapse">
   <li><a href="#alignment" id="toc-alignment" class="nav-link" data-scroll-target="#alignment">Alignment</a></li>
   <li><a href="#consequence-of-misalignment" id="toc-consequence-of-misalignment" class="nav-link" data-scroll-target="#consequence-of-misalignment">Consequence of misalignment</a></li>
@@ -190,7 +188,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#example-with-struct" id="toc-example-with-struct" class="nav-link" data-scroll-target="#example-with-struct">Example with struct</a></li>
   <li><a href="#padding-in-the-real-world" id="toc-padding-in-the-real-world" class="nav-link" data-scroll-target="#padding-in-the-real-world">Padding in the real world</a></li>
   <li><a href="#experiemnt" id="toc-experiemnt" class="nav-link" data-scroll-target="#experiemnt">Experiemnt</a></li>
-  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -202,8 +199,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><img src="thumbnail.jpg" class="img-fluid"></p>
-<section id="data-alignment" class="level1">
-<h1>Data Alignment</h1>
 <p>In this article, I will benchmark how <strong>data alignment</strong> could affect the performace of a program.</p>
 <p>Let us start with the experimental result. From the plot shown below, apparently, there is a performance impact on misaligned memory accesses. But <strong>why?</strong></p>
 <p><img src="https://i.imgur.com/a329JHW.png" class="img-fluid"></p>
@@ -313,9 +308,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    hello()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>[]: Sven-Hendrik Haase, “Alignment in C”, https://hps.vi4io.org/_media/teaching/wintersemester_2013_2014/epc-14-haase-svenhendrik-alignmentinc-paper.pdf []: https://www.kernel.org/doc/Documentation/unaligned-memory-access.txt</p>
 
 
-</section>
 </section>
 </section>
 

@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Chen">
-<meta name="dcterms.date" content="2023-03-16">
+<meta name="dcterms.date" content="2023-01-11">
 
-<title>AUSTIN CAN HELP - Pragmas</title>
+<title>AUSTIN CAN HELP - Why Arrays Decay into Pointers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,22 +59,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -96,17 +96,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">AUSTIN CAN HELP</span>
     </a>
   </div>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -141,9 +141,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pragmas</h1>
+      <h1 class="title">Why Arrays Decay into Pointers</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">byte-wise</div>
+                <div class="quarto-category">c</div>
               </div>
                   </div>
   </div>
@@ -161,7 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">March 16, 2023</p>
+        <p class="date">January 11, 2023</p>
       </div>
     </div>
     
@@ -172,84 +173,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#option-stacking" id="toc-option-stacking" class="nav-link active" data-scroll-target="#option-stacking">Option stacking</a></li>
-  <li><a href="#code-optimization" id="toc-code-optimization" class="nav-link" data-scroll-target="#code-optimization">Code optimization</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
+<p>First, let’s clear up some terminology. Here’s what the C standard says:</p>
 <blockquote class="blockquote">
-<p><code>#pragma</code> is more than just a header guard.</p>
+<p><strong>C11 § 6.3.2.1.</strong></p>
+<p><strong>Except</strong> when it is the <strong>operand of the sizeof operator</strong>, or the <strong>unary &amp; operator</strong>, or is a <strong>string literal</strong> used to initialize an array, an expression that has type “array of type” is converted to an expression with type “pointer to type” that points to the initial element of the array object and is not an lvalue. If the array object has register storage class, the behavior is undefined.</p>
 </blockquote>
-<p><code>#pragma</code> is a directive specifying extra information to the compiler. With it you can print debug messages, change compilation warnings and optimizations and much more.</p>
-<p>You might be familiar with <code>pragma once</code>, which lets the compiler know to only read the file once. It is usually found on top of header files. This is so called “un-official” replacement for include guard for preventing the same header file to be included multiple times.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// header file</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef HEAD_FILE_H_</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#</span><span class="er">deine HEAD_FILE_H_</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// contents of header file</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif </span><span class="co">// HEAD_FILE_H_</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The conventional method requires that the programmer does provide a unique macro for each header file. Pragma on the other hand is trivial.</p>
-<p>Include errors, resulting in some form of re-definition, is caused by the header being included by other header files, which are then in turn included in a source file - thus multiple inclusions of the same header file.</p>
-<p><code>#pragma</code> in itself is part of the C and C++ standard, but <code>#pragma once</code> is part of the compiler implementation, therefore it is not as universal as <code>#ifndef</code> include guards, which are based on the preprocessor standard. Still it is widely adopted in most modern compilers.</p>
-<p>The syntax for a pragma might look something like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma PREFIX option value(s)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Pragma can source its rules and options from various packages. Those defined by the standard use a prefix <code>STDC</code>, while those used by GNU use <code>GCC</code> prefix.</p>
-<section id="option-stacking" class="level2">
-<h2 class="anchored" data-anchor-id="option-stacking">Option stacking</h2>
-<p>It is important to note, that a pragma directive applies for the whole file from file from that point. Everything before it is unaffected. This is why, when applying certain options just for a small section, it is useful to save current options and restore them back afte the said section.</p>
-<p>This is why you should use <code>push</code> and <code>pop</code> options before and after applying a progma. Push and pop can be used as a value to an option or as part of the option as well. Here are a few examples</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic push</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic error "-Wformat" </span><span class="co">// treat this warning as error</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC diagnostic pop</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MACRO </span><span class="dv">1</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_macro("MACRO") </span><span class="co">// save MACRO value to stack</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#undef MACRO </span><span class="co">// undefine macro MACRO</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">// section affected by</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">()</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_macro("MACRO") </span><span class="co">// pop value of macro MACRO back</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="code-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="code-optimization">Code optimization</h2>
-<p>For most scenarios, I stand by a rule to use the same optimization options for both <code>Debug</code> and <code>Release</code> builds. This prevents unnessary errors and code breakage when switching builds types, where optimizer might do a too-good job and it ends up breaking the executaable. Remember, build type is not just about optimization level.</p>
-<p>For my builds, I use option <code>Og</code> for <code>gcc</code> compiler. This is, by my estimations, the est compromise between optimized code and debug-ability. However it still isn’t perfect. While it does prevent inlining of regular functions, some lambdas and trivial class methods do get inlined. Sometimes whole <code>if-else</code> blocks get optimized to a point, that you cannot put a breakpoint anywhere useful. Even if you do, some variables might get optimized and debugger will not be able to give you any information on their value.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC push_options </span><span class="co">// save current compiler options</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC optimize ("-O0") </span><span class="co">// set optimization level to zero</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">(</span><span class="dt">int</span> a<span class="op">)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> cpy <span class="op">=</span> a<span class="op">;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cpy <span class="op">+</span> <span class="dv">5</span><span class="op">;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#pragma GCC pop_options </span><span class="co">// restore saved compiler options</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the example above, such trivial function might get optimized away. If not, stepping through it might prove useless, as variable <code>cpy</code> might get optimized so that debugger cannot see its value. Setting optimization level to zero disables any funny business from the compiler and forces it to generate expected instructions.</p>
+<p>It’s not arrays in general that decays into pointers, it’s <strong>array expressions</strong> - and not in all contexts. This is <strong>not a type conversions</strong>. It’s an adjustment that <strong>happens at compile time</strong>.</p>
+<p>The reasons are historical. In C’s predecessor language B, this declaration:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">auto</span> V<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>would allocate a cell named <code>V</code> and another group of 10 consecutive cells, storing the address of the first of them in <code>V</code>. The expression <code>V[5]</code> was, and still is, equivalent to <code>*(V+5)</code>. In B, <code>V</code> was treated as a pointer object.</p>
+<p>In C, with the nearest equivalent declaration:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> V<span class="op">[</span><span class="dv">10</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>V</code> is an array object, but <strong>the expression <code>V</code></strong> is converted to a pointer expression and used with the <strong>indexing operator []</strong>.</p>
+<p>See <a href="https://www.bell-labs.com/usr/dmr/www/chist.html">C history</a> on the late <a href="https://en.wikipedia.org/wiki/Dennis_Ritchie">Dennis Ritchie</a>’s home page at Bell Labs.</p>
+<p>One of the consequences of this is that, although array values exist, you can’t manipulate them directly in C. Rather we manipulate array objects using pointers to their elements. (By contrast, we can manipulate structure values directly.)</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The relationship between arrays and pointers in C can be confusing. <strong>Section 6</strong> of <a href="https://c-faq.com/aryptr/index.html">comp.lang.c Frequently Asked Questions</a> has the best explanation I know.</p>
+</div>
+</div>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
