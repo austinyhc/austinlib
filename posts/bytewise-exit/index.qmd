@@ -6,11 +6,9 @@ categories: [byte-wise,c,c++]
 toc: true
 ---
 
-# exit(0)
-
-> Does `exit(0)` cause any memory leak?
-
 ![](https://media.istockphoto.com/id/685520492/photo/outdoors.jpg?s=612x612&w=0&k=20&c=ag3ZFqVpkx59ZRq0uB-vUFHEOBQwCYxlGNQtrWidppo=)
+
+> Does `exit(0)` introduce memory leak?
 
 ## Motivation
 

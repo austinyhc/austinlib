@@ -9,8 +9,7 @@ toc: true
 
 ![](thumbnail.jpg)
 
-
-# Pragmas
+> `#pragma` is more than just a header guard.
 
 `#pragma` is a directive specifying extra information to the compiler. With it you can print debug messages, change compilation warnings and optimizations and much more.
 

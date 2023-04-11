@@ -8,9 +8,6 @@ toc: true
 
 ![](thumbnail.jpg)
 
-
-# Data Alignment
-
 In this article, I will benchmark how **data alignment** could affect the performace of a program.
 
 Let us start with the experimental result. From the plot shown below, apparently, there is a performance impact on misaligned memory accesses. But **why?**
@@ -154,7 +151,6 @@ if __name__ == '__main__':
     hello()
 ```
 
-[^ref]: Sven-Hendrik Haase, "Alignment in C", https://hps.vi4io.org/_media/teaching/wintersemester_2013_2014/epc-14-haase-svenhendrik-alignmentinc-paper.pdf
-
-[^ref]: https://www.kernel.org/doc/Documentation/unaligned-memory-access.txt
+[]: Sven-Hendrik Haase, "Alignment in C", https://hps.vi4io.org/_media/teaching/wintersemester_2013_2014/epc-14-haase-svenhendrik-alignmentinc-paper.pdf
+[]: https://www.kernel.org/doc/Documentation/unaligned-memory-access.txt
 

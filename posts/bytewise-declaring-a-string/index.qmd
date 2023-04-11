@@ -8,8 +8,7 @@ toc: true
 
 ![](https://media.istockphoto.com/id/953073756/video/moving-stock-market-ticker.jpg?s=640x640&k=20&c=7UxEFeJXdl7dhPuXqxAWUtqXpmqaQh5nqTds7PZxpBs=)
 
-# Declaring a String
->
+> Demystify `char*` vs `char[]`
 
 ## Motivation
 
